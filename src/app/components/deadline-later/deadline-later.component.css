@@ -1,0 +1,47 @@
+:host {
+  padding: 10px 40px;
+  background-color: #eaeaea;
+  border: 2px solid #00747c;
+  border-radius: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  text-align: center;
+  box-shadow: 7px 7px 15px -1px #000000;
+
+  p {
+    margin: 0;
+  }
+}
+
+:host:hover {
+  background-color: #00747c;
+  color: #fff;
+  cursor: pointer;
+  border-color: #000;
+}
+
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.deadline,
+.type {
+  font-weight: bold;
+  padding: 10px;
+}
+
+.topic {
+  margin-bottom: 10px;
+}
+.comments {
+  display: -webkit-box;
+  margin-top: 5px;
+  word-break: break-all;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
