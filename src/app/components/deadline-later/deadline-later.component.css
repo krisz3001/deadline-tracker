@@ -21,10 +21,6 @@
   border-color: #000;
 }
 
-.left {
-  text-align: left;
-}
-
 .comments {
   width: 100%;
   display: -webkit-box;
@@ -39,6 +35,7 @@
 .date {
   font-weight: bold;
   padding: 10px;
+  text-align: left;
 }
 
 .title {

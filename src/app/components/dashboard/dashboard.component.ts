@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getDeadlines(): void {
     if (!this.user) return;
+    this.unsubscribe();
     this.unsubs['common'] = this.deadlineService.getCommonDeadlinesRealtime((deadlines) => {
       this.commonDeadlines = deadlines;
       this.sortDeadlines();
@@ -65,8 +66,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.deadlinesLater = deadlines.sort((a, b) => a.date.toMillis() - b.date.toMillis()).slice(3);
   }
 
+  unsubscribe(): void {
+    Object.values(this.unsubs).forEach((unsub) => unsub());
+  }
+
   ngOnDestroy(): void {
     this.sub.unsubscribe();
-    Object.values(this.unsubs).forEach((unsub) => unsub());
+    this.unsubscribe();
   }
 }

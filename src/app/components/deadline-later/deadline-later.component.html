@@ -1,4 +1,4 @@
-<p class="left date">{{ deadline.date | TimestampToDate }}</p>
+<p class="date">{{ deadline.date | TimestampToDate }}</p>
 <p class="title">
   <span>{{ deadline.subject }} - {{ examTypes[deadline.type] }}</span>
   <app-stars [count]="deadline.severity" size="small" />

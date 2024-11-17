@@ -16,11 +16,16 @@
   flex-direction: row-reverse;
 }
 
+@font-face {
+  font-family: "dancing";
+  src: url("/assets/fonts/dancing.ttf");
+}
+
 a {
   margin: 0;
   color: white;
   font-size: 30px;
   text-decoration: none;
-  font-family: "cursive";
+  font-family: "dancing";
   font-weight: bold;
 }
