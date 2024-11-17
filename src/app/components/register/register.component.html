@@ -1,0 +1,43 @@
+<form [formGroup]="registerForm" (submit)="register()" (input)="resetError()" spellcheck="false">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" name="email" autocomplete="email" />
+    @if (email.errors?.["required"]) {
+      <mat-error>Email megadása kötelező</mat-error>
+    } @else if (email.errors?.["email"]) {
+      <mat-error>Hibás email</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Név</mat-label>
+    <input matInput formControlName="fullname" name="fullname" />
+    @if (fullname.errors?.["required"]) {
+      <mat-error>Név megadása kötelező</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Jelszó</mat-label>
+    <input type="password" matInput formControlName="password" name="password" autocomplete="new-password" />
+    <mat-hint align="end">Jelszó hossza: {{ password.value?.length }}</mat-hint>
+    @if (password.errors?.["required"]) {
+      <mat-error>Jelszó megadása kötelező</mat-error>
+    } @else if (password.errors?.["minlength"]) {
+      <mat-error>Jelszó túl rövid</mat-error>
+    } @else if (password.errors?.["maxlength"]) {
+      <mat-error>Jelszó túl hosszú</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Jelszó megerősítése</mat-label>
+    <input type="password" matInput formControlName="passwordConfirm" name="password-confirm" />
+    @if (passwordConfirm.errors?.["required"]) {
+      <mat-error>Jelszó megerősítése kötelező</mat-error>
+    } @else if (passwordConfirm.errors?.["mismatch"]) {
+      <mat-error>A jelszavak nem egyeznek</mat-error>
+    }
+  </mat-form-field>
+  @if (registerError) {
+    <mat-error>{{ registerError }}</mat-error>
+  }
+  <button class="btn" type="submit" [disabled]="registerForm.invalid">Regisztráció</button>
+</form>

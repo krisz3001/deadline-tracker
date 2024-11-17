@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background-color: #00bbc9;
+  height: 100%;
+}
+
+:host(.easter-egg) {
+  background-image: url("/assets/elekzoli.gif");
+}
+
+mat-tab-group {
+  background-color: #fff;
+  color: #333;
+  padding: 40px;
+  border-radius: 5px;
+  border: 1px solid #00bbc9;
+}
+
+@font-face {
+  font-family: "dancing";
+  src: url("/assets/fonts/dancing.ttf");
+}

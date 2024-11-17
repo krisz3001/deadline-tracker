@@ -1,37 +1,26 @@
-<mat-card class="login-card" @fadeIn>
-  <form [formGroup]="loginForm" (submit)="login()" (input)="loginError = ''">
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email" [disabled]="isLoading" />
-      @if (email.errors?.["required"]) {
-        <mat-error>Email is required</mat-error>
-      } @else if (email.errors?.["email"]) {
-        <mat-error>Invalid email</mat-error>
-      }
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input matInput formControlName="password" type="password" [disabled]="isLoading" />
-      @if (password.errors?.["required"]) {
-        <mat-error>Password is required</mat-error>
-      } @else if (password.errors?.["maxlength"]) {
-        <mat-error>Password is too long</mat-error>
-      }
-    </mat-form-field>
-    @if (loginError) {
-      <mat-error>{{ loginError }}</mat-error>
+<form [formGroup]="loginForm" (submit)="login()" (input)="resetError()" spellcheck="false">
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" name="email" autocomplete="email" />
+    @if (email.errors?.["required"]) {
+      <mat-error>Email megadása kötelező</mat-error>
+    } @else if (email.errors?.["email"]) {
+      <mat-error>Hibás email</mat-error>
     }
-    <button mat-raised-button color="primary" [disabled]="loginForm.invalid || isLoading">Login</button>
-  </form>
-  @if (isLoading) {
-    <div class="loading-overlay">
-      <mat-spinner diameter="30"></mat-spinner>
-    </div>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Jelszó</mat-label>
+    <input type="password" matInput formControlName="password" name="password" autocomplete="new-password" />
+    @if (password.errors?.["required"]) {
+      <mat-error>Jelszó megadása kötelező</mat-error>
+    } @else if (password.errors?.["minlength"]) {
+      <mat-error>Jelszó túl rövid</mat-error>
+    } @else if (password.errors?.["maxlength"]) {
+      <mat-error>Jelszó túl hosszú</mat-error>
+    }
+  </mat-form-field>
+  @if (loginError) {
+    <mat-error>{{ loginError }}</mat-error>
   }
-</mat-card>
-
-@if (!isProduction) {
-  <div style="position: absolute; top: 10px; left: 10px; display: flex; gap: 10px">
-    <button mat-raised-button color="warn" type="button" (click)="letMeIn()">Let me in</button>
-  </div>
-}
+  <button class="btn" type="submit" [disabled]="loginForm.invalid">Bejelentkezés</button>
+</form>
