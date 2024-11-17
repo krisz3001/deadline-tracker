@@ -24,24 +24,31 @@
 .left {
   text-align: left;
 }
-.right {
+
+.comments {
+  width: 100%;
+  display: -webkit-box;
+  word-break: break-all;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   text-align: right;
 }
-.deadline,
-.type {
+
+.date {
   font-weight: bold;
   padding: 10px;
 }
 
-.topic {
-  margin-bottom: 10px;
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
 }
-.comments {
-  display: -webkit-box;
-  margin-top: 5px;
-  word-break: break-all;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+
+mat-icon {
+  color: #ffee00;
+  transform: scale(1.5);
 }

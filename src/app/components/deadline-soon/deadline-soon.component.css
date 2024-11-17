@@ -10,18 +10,31 @@
   overflow: hidden;
 }
 
-.deadline,
-.type {
-  font-weight: bold;
-  padding: 10px;
+:host:hover {
+  background-color: #00747c;
+  color: #fff;
+  cursor: pointer;
+  border-color: #000;
 }
 
-.topic {
-  margin-bottom: 10px;
+.date,
+.title {
+  font-weight: bold;
+  padding: 10px;
+  margin: 0;
 }
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
 .comments {
   display: -webkit-box;
-  margin-top: 5px;
+  padding: 5px;
+  margin: 0;
   word-break: break-all;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -29,16 +42,8 @@
   overflow: hidden;
 }
 
-.left {
-  text-align: left;
-}
-.right {
-  text-align: right;
-}
-
-:host:hover {
-  background-color: #00747c;
-  color: #fff;
-  cursor: pointer;
-  border-color: #000;
+hr {
+  margin: 10px 0;
+  border: 0;
+  border-top: 2px solid #000;
 }

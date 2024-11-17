@@ -8,10 +8,8 @@ import { Timestamp } from '@angular/fire/firestore';
 export class TimestampToDatePipe implements PipeTransform {
   transform(value: Timestamp): string {
     if (!value) return 'No date';
-    return value.toDate().toLocaleDateString('hu-HU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return value.toDate().toLocaleDateString('hu', {
+      dateStyle: 'full',
     });
   }
 }

@@ -1,8 +1,8 @@
-<div class="top">
-  <p class="deadline">{{ deadline.date | TimestampToDate }}</p>
-  <hr />
-  <p class="type">{{ deadline.type }}</p>
-  <p class="subject">{{ deadline.type }}</p>
-  <hr />
-  <p class="comments">{{ deadline.description }}</p>
-</div>
+<p class="date">{{ deadline.date | TimestampToDate }}</p>
+<hr />
+<p class="title">
+  <span>{{ deadline.subject }} - {{ examTypes[deadline.type] }}</span>
+  <app-stars [count]="deadline.severity" />
+</p>
+<hr />
+<p class="comments">{{ deadline.comments }}</p>

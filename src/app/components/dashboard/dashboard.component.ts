@@ -1,66 +1,72 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DeadlineService } from '../../services/deadline.service';
 import { Unsubscribe } from '@angular/fire/auth';
 import { Deadline } from '../../interfaces/deadline.interface';
-import { Timestamp } from '@angular/fire/firestore';
 import { DeadlineSoonComponent } from '../deadline-soon/deadline-soon.component';
 import { DeadlineLaterComponent } from '../deadline-later/deadline-later.component';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { User } from '../../interfaces/user.interface';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [DeadlineSoonComponent, DeadlineLaterComponent],
+  imports: [DeadlineSoonComponent, DeadlineLaterComponent, NavbarComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
-    private router: Router,
     private deadlineService: DeadlineService,
-  ) {}
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer,
+  ) {
+    this.iconRegistry.addSvgIcon('star', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/star.svg'));
+  }
+
+  commonDeadlines: Deadline[] = [];
+  personalDeadlines: Deadline[] = [];
 
   deadlinesSoon: Deadline[] = [];
   deadlinesLater: Deadline[] = [];
 
+  private user: User | null = null;
   private sub = new Subscription();
-  private unsubscribe: Unsubscribe = () => {};
+  private unsubs: { [key: string]: Unsubscribe } = {};
 
   ngOnInit(): void {
     this.sub = this.authService.userData.subscribe((user) => {
-      console.log(user);
-    });
-
-    this.unsubscribe = this.deadlineService.getDeadlinesRealtime((deadlines) => {
-      this.deadlinesSoon = deadlines.sort((a, b) => a.date.toMillis() - b.date.toMillis()).slice(0, 3);
-      this.deadlinesLater = deadlines.sort((a, b) => b.date.toMillis() - a.date.toMillis()).slice(3);
+      this.user = user;
+      this.getDeadlines();
     });
   }
 
-  logout() {
-    this.authService.logout().subscribe(() => this.router.navigate(['/login']));
+  getDeadlines(): void {
+    if (!this.user) return;
+    this.unsubs['common'] = this.deadlineService.getCommonDeadlinesRealtime((deadlines) => {
+      this.commonDeadlines = deadlines;
+      this.sortDeadlines();
+    });
+
+    this.unsubs['personal'] = this.deadlineService.getPersonalDeadlinesRealtime(this.user, (deadlines) => {
+      this.personalDeadlines = deadlines;
+      this.sortDeadlines();
+    });
   }
 
-  randomDeadline(): void {
-    const deadline: Deadline = {
-      title: 'Random deadline',
-      date: Timestamp.now(),
-      description: 'This is a random deadline',
-      id: '',
-      isCompleted: false,
-      type: 'exam',
-    };
-
-    this.deadlineService.addDeadline(deadline).subscribe(() => {
-      console.log('Deadline added');
-    });
+  sortDeadlines(): void {
+    const deadlines = [...this.commonDeadlines, ...this.personalDeadlines];
+    deadlines.sort((a, b) => b.severity - a.severity);
+    this.deadlinesSoon = deadlines.sort((a, b) => a.date.toMillis() - b.date.toMillis()).slice(0, 3);
+    this.deadlinesLater = deadlines.sort((a, b) => a.date.toMillis() - b.date.toMillis()).slice(3);
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
-    this.unsubscribe();
+    Object.values(this.unsubs).forEach((unsub) => unsub());
   }
 }

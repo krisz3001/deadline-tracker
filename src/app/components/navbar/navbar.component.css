@@ -1,0 +1,26 @@
+:host {
+  background-color: #202022;
+  height: 56px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 10px;
+  gap: 15px;
+}
+
+.menu {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+a {
+  margin: 0;
+  color: white;
+  font-size: 30px;
+  text-decoration: none;
+  font-family: "cursive";
+  font-weight: bold;
+}

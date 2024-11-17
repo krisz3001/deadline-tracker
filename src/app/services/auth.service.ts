@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Credentials } from '../interfaces/credentials.interface';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 import { User } from '../interfaces/user.interface';
@@ -58,9 +58,10 @@ export class AuthService {
     const promise = createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password).then((res) =>
       updateProfile(res.user, { displayName: credentials.fullname }).then(() => {
         setDoc(doc(this.users, res.user.uid), {
+          id: res.user.uid,
           email: credentials.email,
           fullname: credentials.fullname,
-          deadlines: ['teszt'],
+          editor: false,
         });
       }),
     );
@@ -81,6 +82,7 @@ export class AuthService {
   logout(): Observable<void> {
     return from(signOut(this.auth)).pipe(
       map(() => {
+        this.unsubscribe();
         this.userDataSubject.next(null);
         this.router.navigate(['/login']);
       }),

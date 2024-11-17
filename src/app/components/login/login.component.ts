@@ -49,7 +49,7 @@ export class LoginComponent {
   letMeIn(): void {
     if (this.isProduction) return;
 
-    const creds: Credentials = { email: 'a@a.aa', password: '123123', fullname: 'Mr. Szakértő' };
+    const creds: Credentials = { email: 'a@a.aa', password: '123123', fullname: 'Admin' };
 
     this.authService.register(creds).subscribe({
       next: () => {

@@ -5,7 +5,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
-  { path: '', component: DashboardComponent, canActivate: [AuthGuard], pathMatch: 'full', title: 'Login' },
+  { path: '', component: DashboardComponent, canActivate: [AuthGuard], pathMatch: 'full', title: 'Deadline Tracker' },
   {
     path: 'login',
     component: LoginComponent,

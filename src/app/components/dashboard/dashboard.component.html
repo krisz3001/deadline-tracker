@@ -1,17 +1,11 @@
-<div id="navbar">
-  <a id="pageTitle" href="/">Deadline Tracker</a>
-  <div id="navButtons">
-    <button (click)="randomDeadline()">Add</button>
-    <button (click)="logout()">Logout</button>
-  </div>
-</div>
+<app-navbar />
 <div class="soon">
-  @for (deadline of deadlinesSoon; track $index) {
-    <app-deadline-soon [deadline]="deadline"></app-deadline-soon>
+  @for (deadline of deadlinesSoon; track deadline) {
+    <app-deadline-soon [deadline]="deadline" />
   }
 </div>
 <div class="later">
-  @for (deadline of deadlinesLater; track $index) {
-    <app-deadline-later [deadline]="deadline"></app-deadline-later>
+  @for (deadline of deadlinesLater; track deadline) {
+    <app-deadline-later [deadline]="deadline" />
   }
 </div>

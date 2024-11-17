@@ -1,0 +1,20 @@
+<button class="btn-close" mat-icon-button [mat-dialog-close]="undefined"><mat-icon>close</mat-icon></button>
+<div class="header">
+  <h2>{{ examTypes[data.deadline.type] }}</h2>
+  <app-stars [count]="data.deadline.severity" />
+  @if (user.editor) {
+    <div>
+      <button mat-icon-button (click)="editDeadline()"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button (click)="deleteDeadline()"><mat-icon>delete</mat-icon></button>
+    </div>
+  }
+</div>
+<hr />
+<h2 class="detail">Tárgy: {{ data.deadline.subject }}</h2>
+<h2 class="detail">Dátum: {{ data.deadline.date | TimestampToDate }}</h2>
+<hr />
+@if (data.deadline.comments !== "") {
+  <p>Megjegyzés: {{ data.deadline.comments }}</p>
+}
+<p>Hozzáadta: {{ data.deadline.creator }}</p>
+<p>{{ data.deadline.isPersonal ? "Személyes (" + data.deadline.ownerName + ")" : "Közös" }}</p>

@@ -1,3 +1,6 @@
-<p class="deadlineLater left">{{ deadline.date | TimestampToDate }}</p>
-<p class="type">{{ deadline.type }}</p>
-<p class="subject right">{{ deadline.title }}</p>
+<p class="left date">{{ deadline.date | TimestampToDate }}</p>
+<p class="title">
+  <span>{{ deadline.subject }} - {{ examTypes[deadline.type] }}</span>
+  <app-stars [count]="deadline.severity" size="small" />
+</p>
+<p class="comments">{{ deadline.comments }}</p>

@@ -1,0 +1,16 @@
+:host(.big) {
+  display: flex;
+  gap: 10px;
+}
+
+mat-icon {
+  color: #ffee00;
+}
+
+.big {
+  transform: scale(2);
+}
+
+.small {
+  transform: scale(1.5);
+}

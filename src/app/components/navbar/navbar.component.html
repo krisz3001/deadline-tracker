@@ -1,0 +1,7 @@
+<a routerLink="/">Deadline Tracker</a>
+<div class="menu">
+  <button class="btn" (click)="logout()">Kilépés</button>
+  @if (user && user.editor) {
+    <button class="btn" (click)="addDeadline()">Hozzáadás</button>
+  }
+</div>
