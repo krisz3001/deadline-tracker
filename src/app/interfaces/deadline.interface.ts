@@ -11,6 +11,5 @@ export interface Deadline {
   creator: string;
   ownerId: string;
   ownerName: string;
-  isCompleted: boolean;
   isPersonal: boolean;
 }

@@ -16,7 +16,7 @@ body {
 }
 
 .btn {
-  transition-duration: 0.4s;
+  transition-duration: 0.15s;
   padding: 10px;
   border: none;
   border-radius: 5px;
@@ -24,6 +24,7 @@ body {
   background-color: #00747c;
   color: #fff;
   user-select: none;
+  border: 1px solid #00747c;
 }
 
 .btn:hover {
@@ -35,6 +36,7 @@ body {
   background-color: #ccc;
   color: #666;
   cursor: not-allowed;
+  border: 1px solid #ccc;
 }
 
 .snackbar-error {

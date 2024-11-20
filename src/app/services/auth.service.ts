@@ -3,7 +3,7 @@ import { Credentials } from '../interfaces/credentials.interface';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 import { User } from '../interfaces/user.interface';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, Unsubscribe, updateProfile, user } from '@angular/fire/auth';
-import { collection, doc, Firestore, getDoc, onSnapshot, setDoc } from '@angular/fire/firestore';
+import { collection, doc, Firestore, onSnapshot, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
 @Injectable({

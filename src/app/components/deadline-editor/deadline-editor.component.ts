@@ -15,6 +15,7 @@ import { DeadlineService } from '../../services/deadline.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '../../interfaces/user.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 interface DialogData {
   user: User;
@@ -34,6 +35,7 @@ interface DialogData {
     MatSliderModule,
     MatRadioModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
   ],
   providers: [
     { provide: DateAdapter, useClass: NativeDateAdapter },
@@ -50,6 +52,7 @@ export class DeadlineEditorComponent implements OnInit {
     comments: new FormControl(''),
     severity: new FormControl(1, [Validators.required]),
     isPersonal: new FormControl<boolean | null>(null, [Validators.required]),
+    isCompleted: new FormControl(false),
   });
 
   data = inject(MAT_DIALOG_DATA) as DialogData;
@@ -73,6 +76,7 @@ export class DeadlineEditorComponent implements OnInit {
         comments: this.data.deadline.comments,
         severity: this.data.deadline.severity,
         isPersonal: this.data.deadline.isPersonal,
+        isCompleted: this.data.user.completed.includes(this.data.deadline.id),
       });
     }
   }
@@ -94,13 +98,14 @@ export class DeadlineEditorComponent implements OnInit {
       comments: this.comments.value!,
       severity: this.severity.value!,
       isPersonal: this.isPersonal.value!,
+      ownerId: this.data.user.id,
+      ownerName: this.data.user.fullname,
     } as Deadline;
 
     if (this.data.deadline) {
       this.edit(deadline);
     } else {
       deadline.creator = this.data.user.fullname;
-      deadline.isCompleted = false;
       this.add(deadline);
     }
   }
@@ -120,9 +125,9 @@ export class DeadlineEditorComponent implements OnInit {
     };
 
     if (this.isPersonal.value) {
-      this.deadlineService.addPersonalDeadline(this.data.user, deadline).subscribe(observer);
+      this.deadlineService.addPersonalDeadline(this.data.user, deadline, this.isCompleted.value!).subscribe(observer);
     } else {
-      this.deadlineService.addCommonDeadline(deadline).subscribe(observer);
+      this.deadlineService.addCommonDeadline(this.data.user, deadline, this.isCompleted.value!).subscribe(observer);
     }
   }
 
@@ -139,6 +144,8 @@ export class DeadlineEditorComponent implements OnInit {
         console.error(error);
       },
     };
+
+    this.deadlineService.toggleCompleted(this.data.user, deadline, this.isCompleted.value!).subscribe();
 
     if (this.isPersonal.value === this.data.deadline!.isPersonal) {
       this.saveDeadline(deadline, observer);
@@ -181,5 +188,9 @@ export class DeadlineEditorComponent implements OnInit {
 
   get isPersonal() {
     return this.form.get('isPersonal')!;
+  }
+
+  get isCompleted() {
+    return this.form.get('isCompleted')!;
   }
 }

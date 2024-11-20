@@ -2,10 +2,13 @@ import { inject, Injectable } from '@angular/core';
 import { Unsubscribe } from '@angular/fire/auth';
 import {
   addDoc,
+  arrayRemove,
+  arrayUnion,
   collection,
   CollectionReference,
   deleteDoc,
   doc,
+  DocumentReference,
   Firestore,
   onSnapshot,
   query,
@@ -55,14 +58,14 @@ export class DeadlineService {
     );
   }
 
-  addCommonDeadline(deadline: Deadline): Observable<void> {
-    const promise = addDoc(this.deadlines, deadline).then((doc) => updateDoc(doc, { id: doc.id }));
+  addCommonDeadline(user: User, deadline: Deadline, isCompleted: boolean): Observable<void> {
+    const promise = addDoc(this.deadlines, deadline).then((docRef) => this.addIdAndUpdateCompleted(docRef, user, isCompleted));
     return from(promise);
   }
 
-  addPersonalDeadline(user: User, deadline: Deadline): Observable<void> {
+  addPersonalDeadline(user: User, deadline: Deadline, isCompleted: boolean): Observable<void> {
     const userDeadlines = collection(this.firestore, `users/${user.id}/deadlines`);
-    const promise = addDoc(userDeadlines, deadline).then((doc) => updateDoc(doc, { id: doc.id }));
+    const promise = addDoc(userDeadlines, deadline).then((docRef) => this.addIdAndUpdateCompleted(docRef, user, isCompleted));
     return from(promise);
   }
 
@@ -86,6 +89,26 @@ export class DeadlineService {
     const userDeadlines = collection(this.firestore, `users/${user.id}/deadlines`);
     const promise = deleteDoc(doc(userDeadlines, deadline.id));
     return from(promise);
+  }
+
+  toggleCompleted(user: User, deadline: Deadline, isCompleted: boolean): Observable<void> {
+    const promise = runTransaction(this.firestore, async (transaction) => {
+      transaction.update(doc(this.firestore, `users/${user.id}`), {
+        completed: isCompleted ? arrayUnion(deadline.id) : arrayRemove(deadline.id),
+      });
+    });
+    return from(promise);
+  }
+
+  addIdAndUpdateCompleted(docRef: DocumentReference, user: User, isCompleted: boolean): Promise<void> {
+    return runTransaction(this.firestore, async (transaction) => {
+      transaction.update(docRef, { id: docRef.id });
+      if (isCompleted) {
+        transaction.update(doc(this.firestore, `users/${user.id}`), {
+          completed: arrayUnion(docRef.id),
+        });
+      }
+    });
   }
 
   saveAndTransferToUser(deadline: Deadline, user: User): Observable<void> {

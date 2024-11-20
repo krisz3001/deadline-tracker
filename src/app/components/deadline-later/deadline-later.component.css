@@ -2,12 +2,13 @@
   padding: 10px 40px;
   background-color: #eaeaea;
   border: 2px solid #00747c;
-  border-radius: 15px;
+  border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   text-align: center;
-  box-shadow: 7px 7px 15px -1px #000000;
+  box-shadow: 7px 7px 12px -1px #000000;
+  position: relative;
 
   p {
     margin: 0;
@@ -46,6 +47,8 @@
 }
 
 mat-icon {
-  color: #ffee00;
-  transform: scale(1.5);
+  color: #4caf50;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
